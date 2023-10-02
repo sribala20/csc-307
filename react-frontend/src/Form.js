@@ -20,7 +20,6 @@ function Form(props) {
             );
     }
 
-    <Form handleSubmit={updateList} />
 
     function submitForm() {
         props.handleSubmit(person);
@@ -28,24 +27,24 @@ function Form(props) {
     }
     <input type="button" value="Submit" onClick={submitForm} />
 
+    return (
+        <form>
+            <label htmlFor="name">Name</label>
+            <input
+                type="text"
+                name="name"
+                id="name"
+                value={person.name}
+                onChange={handleChange} />
+            <label htmlFor="job">Job</label>
+            <input
+                type="text"
+                name="job"
+                id="job"
+                value={person.job}
+                onChange={handleChange} />
+        </form>
+    );
 }
-return (
-    <form>
-        <label htmlFor="name">Name</label>
-        <input
-            type="text"
-            name="name"
-            id="name"
-            value={person.name}
-            onChange={handleChange} />
-        <label htmlFor="job">Job</label>
-        <input
-            type="text"
-            name="job"
-            id="job"
-            value={person.job}
-            onChange={handleChange} />
-    </form>
-);
 
 export default Form;

@@ -8,6 +8,8 @@ function MyApp() {
     function updateList(person) {
         setCharacters([...characters, person]);
       }
+
+    <Form handleSubmit={updateList} />
     // const [characters, setCharacters] = useState([
     //     {
     //         name: "Charlie",
