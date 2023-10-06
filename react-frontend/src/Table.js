@@ -34,7 +34,7 @@ function TableBody(props) {
     );
 }
 
-function Table(props) {
+function Table(props) { //props allows for passing data into a component (one way flow)
     return (
         <table>
             <TableHeader />

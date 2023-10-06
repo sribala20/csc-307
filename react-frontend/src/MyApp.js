@@ -3,31 +3,12 @@ import Table from "./Table";
 import Form from './Form';
 
 function MyApp() {
+    // useState => state value, function to update it.
     const [characters, setCharacters] = useState([])
 
     function updateList(person) {
         setCharacters([...characters, person]);
       }
-
-    <Form handleSubmit={updateList} />
-    // const [characters, setCharacters] = useState([
-    //     {
-    //         name: "Charlie",
-    //         job: "Janitor",
-    //     },
-    //     {
-    //         name: "Mac",
-    //         job: "Bouncer",
-    //     },
-    //     {
-    //         name: "Dee",
-    //         job: "Aspring actress",
-    //     },
-    //     {
-    //         name: "Dennis",
-    //         job: "Bartender",
-    //     },
-    // ]);
 
     function removeOneCharacter(index) {
         const updated = characters.filter((character, i) => {
@@ -40,8 +21,9 @@ function MyApp() {
         <div className="container">
             <Table characterData={characters}
                 removeCharacter={removeOneCharacter} />
-            <Form />
+            <Form handleSubmit={updateList} />
         </div>
     );
 }
-export default MyApp;
+export default MyApp; //export default makes avaiable to import into components
+
