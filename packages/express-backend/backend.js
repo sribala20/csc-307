@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 // http middleware dispatching HTTP calls to the routes + send responses
 // npx nodemon backend.js
 // instance of Express and constant for port num
@@ -61,8 +62,8 @@ const deleteUser = (id) => {
   }
 };
 
+app.use(cors()); // allows backend to respond to calls coming from a diff origin
 app.use(express.json()); //process data in JSON
-
 //api endpoint, GET requests
 
 app.get("/", (req, res) => {
