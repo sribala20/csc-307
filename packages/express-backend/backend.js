@@ -34,36 +34,6 @@ const users = {
     },
   ],
 };
-const findUserByName = (name) => {
-  return users["users_list"].filter((user) => user["name"] === name);
-};
-
-//uses filtered user list, so pass in user list as param
-const findUserByJob = (job) => {
-  return users["users_list"].filter((user) => user["job"] === job);
-};
-
-const findUserById = (id) => {
-  users["users_list"].find((user) => user["id"] === id);
-};
-const addUser = (user) => {
-  // creates id with first letter of name and 3 digit num
-  user["id"] =
-    user.name.charAt(0) + Math.floor(Math.random() * (999 - 100 + 1) + 100);
-  users["users_list"].push(user);
-  return user;
-};
-
-//hard delete to remove user by id from list
-const deleteUser = (id) => {
-  res = findUserById(id);
-  if (res == undefined) {
-    res.status(404).send("Resource not found.");
-  } else {
-    idx = users["users_list"].findIndex(res);
-    users["users_list"].splice(idx, idx);
-  }
-};
 
 app.use(cors()); // allows backend to respond to calls coming from a diff origin
 app.use(express.json()); //process data in JSON
@@ -72,6 +42,10 @@ app.use(express.json()); //process data in JSON
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+const findUserByName = (name) => {
+  return users["users_list"].filter((user) => user["name"] === name);
+};
 
 app.get("/users", (req, res) => {
   const name = req.query.name;
@@ -83,6 +57,11 @@ app.get("/users", (req, res) => {
     res.send(users);
   }
 });
+
+//uses filtered user list, so pass in user list as param
+const findUserByJob = (job) => {
+  return users["users_list"].filter((user) => user["job"] === job);
+};
 
 app.get("/users", (req, res) => {
   const name = req.query.name;
@@ -100,6 +79,10 @@ app.get("/users", (req, res) => {
   }
 });
 
+const findUserById = (id) => {
+  return users["users_list"].find((user) => user["id"] === id);
+};
+
 app.get("/users/:id", (req, res) => {
   const id = req.params["id"]; //or req.params.id
   let result = findUserById(id);
@@ -110,6 +93,19 @@ app.get("/users/:id", (req, res) => {
   }
 });
 
+const addUser = (user) => {
+  // creates id with first letter of name and 3 digit num
+  user["id"] =
+    user.name.charAt(0) + Math.floor(Math.random() * (999 - 100 + 1) + 100);
+  user = {
+    id: user.id,
+    name: user.name,
+    job: user.job,
+  };
+  users["users_list"].push(user);
+  return user;
+};
+
 // api endpoint for post methods
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
@@ -117,13 +113,23 @@ app.post("/users", (req, res) => {
   res.status(201).send(userToAdd); //201 content created
 });
 
+// //hard delete to remove user by id from list
+const deleteUser = (id) => {
+  const idx = users["users_list"].findIndex((user) => user["id"] === id);
+  if (idx === -1) {
+    return idx;
+  } else {
+    return users["users_list"].splice(idx,1);
+  }
+};
+
 // api endpoint for delete method
 app.delete("/users/:id", (req, res) => {
   const id = req.params["id"];
-  if (id === undefined) {
+  let result = deleteUser(id);
+  if (result === -1) {
     res.status(404).send("Resource not found.");
   } else {
-    deleteUser(id);
     res.status(204).send();
   }
 });
