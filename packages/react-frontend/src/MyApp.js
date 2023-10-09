@@ -30,15 +30,10 @@ function MyApp() {
       method: "DELETE",
     })
     .then((res) => {
-      if (res.status !== 204) throw new Error("Invalid Response!"); //only if 201.
+      if (res.status !== 204) throw new Error("Invalid Response!"); 
       return res.json();
     })
-    .then(() => {
-      setCharacters(updated);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    setCharacters(updated);
   }
 
   function fetchUsers() {
