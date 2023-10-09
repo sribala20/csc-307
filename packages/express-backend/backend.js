@@ -44,9 +44,12 @@ const findUserByJob = (job) => {
 };
 
 const findUserById = (id) => {
-  return users["users_list"].find((user) => user["id"] === id);
+  users["users_list"].find((user) => user["id"] === id);
 };
 const addUser = (user) => {
+  // creates id with first letter of name and 3 digit num
+  user["id"] =
+    user.name.charAt(0) + Math.floor(Math.random() * (999 - 100 + 1) + 100);
   users["users_list"].push(user);
   return user;
 };
@@ -111,14 +114,18 @@ app.get("/users/:id", (req, res) => {
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
   addUser(userToAdd);
-  res.send();
+  res.status(201).send(userToAdd); //201 content created
 });
 
 // api endpoint for delete method
 app.delete("/users/:id", (req, res) => {
   const id = req.params["id"];
-  deleteUser(id);
-  res.send();
+  if (id === undefined) {
+    res.status(404).send("Resource not found.");
+  } else {
+    deleteUser(id);
+    res.status(204).send();
+  }
 });
 
 //listen to incoming requests on port num

@@ -7,9 +7,16 @@ function MyApp() {
   const [characters, setCharacters] = useState([]);
 
   function updateList(person) {
-    postUser(person)
-      .then(() => setCharacters([...characters, person]))
-      .catch((error) => { //only update if post successful
+    postUser(person) //slide 10, week2-m
+      .then((res) => {
+        if (res.status !== 201) throw new Error("Invalid Response!"); //only if 201.
+        return res.json();
+      })
+      .then((json) => {
+        if (json) setCharacters([...characters, json]);
+        //console.log(json)
+      })
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -18,7 +25,20 @@ function MyApp() {
     const updated = characters.filter((character, i) => {
       return i !== index;
     });
-    setCharacters(updated);
+    const del_id = characters.find((character, i) => i === index)["id"];
+    fetch(`http://localhost:8000/users/${del_id}`, {
+      method: "DELETE",
+    })
+    .then((res) => {
+      if (res.status !== 204) throw new Error("Invalid Response!"); //only if 201.
+      return res.json();
+    })
+    .then(() => {
+      setCharacters(updated);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   function fetchUsers() {
